@@ -48,17 +48,30 @@ class LightsOutApp(tk.Tk):
       exit()
     self.game = game
     self.title("Lights Out Game")
-    self.geometry("400x400")
+    #ウィンドウサイズの設定
+    window_width = 400
+    window_height = 400
+    self.geometry(f"{window_width}x{window_height}")
+
+    # 画面の中央にウィンドウを配置
+    screen_width = self.winfo_screenwidth()
+    screen_height = self.winfo_screenheight()
+    x = int((screen_width / 2) - (window_width / 2))
+    y = int((screen_height / 2) - (window_height / 2))
+    self.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+    self.success_label = tk.Label(self, text="", fg="green")
+    self.success_label.grid(row=self.game.size + 1, columnspan=self.game.size)
+        
     self.buttons = [[None for _ in range(game.size)] for _ in range(game.size)]
     self.initialize_ui()
 
   def initialize_ui(self):
     for row in range(self.game.size):
       for col in range(self.game.size):
-        button = tk.Button(self, width=4, height=2,
-          command=lambda r=row, c=col: self.on_button_click(r, c))
-        button.grid(row=row, column=col)
-        self.buttons[row][col] = button
+        button = tk.Button(self.game_frame, width=4, height=2,
+            command=lambda r=row, c=col: self.on_button_click(r, c))
+        button.grid(row=row, column=col, padx=10, pady=10)
     self.update_buttons()
 
   def on_button_click(self, row, col):
@@ -85,8 +98,7 @@ class LightsOutApp(tk.Tk):
   def initialize_ui(self):
     for row in range(self.game.size):
         for col in range(self.game.size):
-            button = tk.Button(self, width=4, height=2,
-                               command=lambda r=row, c=col: self.on_button_click(r, c))
+            button = tk.Button(self, width=4, height=2, command=lambda r=row, c=col: self.on_button_click(r, c))
             button.grid(row=row, column=col)
             self.buttons[row][col] = button
     self.update_buttons()
